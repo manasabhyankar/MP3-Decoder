@@ -1,0 +1,5 @@
+Used the VS1053 MP3 Decoder with an ARM-based LPC-40xx MCU for music playback and control
+
+The project uses FreeRTOS for managing music playback, track and volume control, and flexibility for adding bass/treble control. The onboard SSD1306 shows some data about the currently playing song.
+
+Communication with both the onboard SSD1306 as well as the VS1053 is through SPI. The included SPI driver is built from scratch and is mostly tested to avoid errors or hard faults. Most errors with regular playback occur through lack of optimization of FreeRTOS tasks and context switiching. The LPC board has 4 onboard GPIO controlled switches for gathering input and changing tasks as necessary. Currently, the tasks are timed using a Timer ISR on a second basis and the ISRs will switch playback modes as necessary. For example, if at any second interval one of the GPIO switches is pressed, FreeRTOS will context switch to another task. This optimization is incomplete, but mostly functional.
